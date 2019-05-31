@@ -1,0 +1,34 @@
+﻿@using Microsoft.AspNetCore.Authentication
+
+@{
+    ViewData["Title"] = "Privacy Policy";
+}
+<h1>@ViewData["Title"]</h1>
+
+
+@if (User.Identity.IsAuthenticated)
+{
+    <h3>Claims</h3>
+
+    <dl>
+        @foreach (var claim in User.Claims)
+        {
+            <dt>@claim.Type</dt>
+            <dd>@claim.Value</dd>
+        }
+    </dl>
+
+    <h3>Properties</h3>
+
+    <dl>
+        @foreach (var prop in (await Context.AuthenticateAsync()).Properties.Items)
+        {
+            <dt>@prop.Key</dt>
+            <dd>@prop.Value</dd>
+        }
+    </dl>
+}
+else
+{
+    <h3>No User Authenticated</h3>
+}
