@@ -1,26 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp;
 using MvcApp.Models;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace MvcApp.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IHttpClientFactory _clientFactory;
-        private new static readonly DefaultHttpContext httpContext = new DefaultHttpContext();
 
         public HomeController(IHttpClientFactory clientFactory)
         {
@@ -65,13 +57,7 @@ namespace MvcApp.Controllers
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var response = await client.SendAsync(request);
             var content = await response.Content.ReadAsStringAsync();
-            object jsoned;
-            if (!response.IsSuccessStatusCode)
-            {
-                jsoned = JsonConvert.DeserializeObject(content);
-                return View(jsoned);
-            }
-            jsoned = JsonConvert.DeserializeObject(content);
+            var jsoned = JsonConvert.DeserializeObject(content);
             return View(jsoned);
         }
 
